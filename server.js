@@ -566,7 +566,7 @@ const validateActivity = async (req, res, next) => {
 
     if (todayActivities >= 1) {
       return res.status(400).json({
-        message: "이 카���고리는 하루에 한 번만 인증할 수 있습니다.",
+        message: "이 카테고리는 하루에 한 번만 인증할 수 있습니다.",
         nextAvailable: new Date(today.getTime() + 24 * 60 * 60 * 1000),
       });
     }

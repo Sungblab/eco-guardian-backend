@@ -16,13 +16,12 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
+    origin: ["https://wdhsecoguardian.netlify.app", "http://127.0.0.1:5500"],
     credentials: true,
   })
 );
 
 // 정적 파일 제공 설정
-app.use(express.static(path.join(__dirname, "../front-end")));
 app.use("/uploads", express.static("uploads"));
 
 // API 라우트들을 여기에 배치
@@ -121,19 +120,17 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
-// HTML 파일 요청 처리
-app.get("/*.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "../front-end", req.path));
-});
-
-// 메인 페이지 처리
+// 메인 페이지 처리를 API 상태 확인 응답으로 변경
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../front-end/index.html"));
+  res.json({ message: "환경지킴이 API 서버가 실행중입니다." });
 });
 
 // MongoDB 연결 및 서버 시작
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/eco-guardian")
+  .connect(
+    process.env.MONGODB_URI ||
+      "mongodb+srv://parkchi1006:fZYyw4uS8W7ltdVh@cluster0.elnmg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
   .then(() => {
     console.log("MongoDB 연결 성공");
 

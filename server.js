@@ -6,6 +6,7 @@ const multer = require("multer");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 
 // 환경 변수 설정
 dotenv.config();
@@ -125,6 +126,15 @@ app.get("/", (req, res) => {
   res.json({ message: "환경지킴이 API 서버가 실행중입니다." });
 });
 
+// uploads 디렉토리 생성 함수
+function createUploadsDirectory() {
+  const uploadsDir = path.join(__dirname, "uploads");
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+    console.log("uploads 디렉토리가 생성되었습니다.");
+  }
+}
+
 // MongoDB 연결 및 서버 시작
 mongoose
   .connect(
@@ -133,6 +143,9 @@ mongoose
   )
   .then(() => {
     console.log("MongoDB 연결 성공");
+
+    // uploads 디렉토리 생성
+    createUploadsDirectory();
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
@@ -553,7 +566,7 @@ const validateActivity = async (req, res, next) => {
 
     if (todayActivities >= 1) {
       return res.status(400).json({
-        message: "이 카테고리는 하루에 한 번만 인증할 수 있습니다.",
+        message: "이 카���고리는 하루에 한 번만 인증할 수 있습니다.",
         nextAvailable: new Date(today.getTime() + 24 * 60 * 60 * 1000),
       });
     }

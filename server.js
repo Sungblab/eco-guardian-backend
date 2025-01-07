@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://wdhsecoguardian.netlify.app", "http://127.0.0.1:5500"],
+    origin: ["http://127.0.0.1:5500"],
     credentials: true,
   })
 );
@@ -137,10 +137,7 @@ function createUploadsDirectory() {
 
 // MongoDB 연결 및 서버 시작
 mongoose
-  .connect(
-    process.env.MONGODB_URI ||
-      "mongodb+srv://parkchi1006:fZYyw4uS8W7ltdVh@cluster0.elnmg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-  )
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/eco-guardian")
   .then(() => {
     console.log("MongoDB 연결 성공");
 
